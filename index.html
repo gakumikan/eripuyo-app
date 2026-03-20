@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
 
         :root {
             --bg: #0e0612;
@@ -372,7 +372,14 @@
             white-space: pre-line;
             border-radius: 2px;
             margin-bottom: 12px;
-            user-select: all;
+            width: 100%;
+            resize: none;
+            font-family: 'Noto Sans JP', sans-serif;
+            font-weight: 300;
+            outline: none;
+            cursor: text;
+            box-sizing: border-box;
+            user-select: text;
         }
         .btn-copy {
             width: 100%;
@@ -526,7 +533,7 @@
                 <strong>えりぷよのLINEに貼り付けて送ると</strong><br>
                 あなたの星座に合わせた詳しい鑑定が届きます
             </p>
-            <div class="copy-preview" id="copy-text"></div>
+            <textarea class="copy-preview" id="copy-text" readonly rows="10" onclick="this.select()"></textarea>
             <button class="btn-copy" id="copy-btn" onclick="copyText()">
                 <span id="copy-icon">📋</span>
                 <span id="copy-label">テ キ ス ト を コ ピ ー す る</span>
@@ -977,7 +984,10 @@ ${sign.q}
 えりぷよホロスコープ診断より
 このテキストをLINEに送ると詳しい鑑定が届きます`;
 
-    document.getElementById('copy-text').textContent = copyContent;
+    const copyEl = document.getElementById('copy-text');
+    copyEl.value = copyContent;
+    copyEl.style.height = 'auto';
+    copyEl.style.height = copyEl.scrollHeight + 'px';
 
     // 男性の場合：コピーブロック・月星座・LINE CTAを非表示
     const copyBlock = document.querySelector('.copy-block');
@@ -999,7 +1009,7 @@ ${sign.q}
 }
 
 function copyText() {
-    const text = document.getElementById('copy-text').textContent;
+    const text = document.getElementById('copy-text').value;
     navigator.clipboard.writeText(text).then(() => {
         const btn = document.getElementById('copy-btn');
         const icon = document.getElementById('copy-icon');
