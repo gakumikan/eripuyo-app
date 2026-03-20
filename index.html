@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>恋愛覚醒ホロスコープ | えりぷよ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0e0612;
+            --gold: #c9a96e;
+            --gold-light: #e8c98a;
+            --ivory: #f5efe8;
+            --ivory-dim: #a89e94;
+            --rose: #c4748a;
+            --card-bg: rgba(255,255,255,0.04);
+            --card-border: rgba(201,169,110,0.2);
+            --line-green: #06C755;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--ivory);
+            font-family: 'Noto Sans JP', sans-serif;
+            font-weight: 300;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── 星 ── */
+        #stars {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--d,3s) ease-in-out infinite;
+            opacity: 0;
+        }
+        @keyframes twinkle {
+            0%,100% { opacity: 0; }
+            50% { opacity: var(--o,0.4); }
+        }
+
+        /* ── レイアウト ── */
+        .wrap {
+            position: relative;
+            z-index: 1;
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ── ヒーロー ── */
+        .hero {
+            text-align: center;
+            padding: 64px 0 48px;
+        }
+        .badge {
+            display: inline-block;
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--gold);
+            border: 1px solid rgba(201,169,110,0.3);
+            padding: 5px 14px;
+            margin-bottom: 32px;
+        }
+        .hero h1 {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 27px;
+            font-weight: 300;
+            line-height: 1.8;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+        .hero h1 em {
+            font-style: normal;
+            color: var(--gold-light);
+        }
+        .hero p {
+            font-size: 13px;
+            color: var(--ivory-dim);
+            line-height: 2;
+            letter-spacing: 0.5px;
+        }
+        .divider {
+            color: var(--gold);
+            font-size: 14px;
+            letter-spacing: 10px;
+            margin: 28px 0;
+            opacity: 0.4;
+        }
+
+        /* ── フォーム ── */
+        .form-wrap { padding-bottom: 56px; }
+        .form-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 32px 24px;
+        }
+        .form-label {
+            display: block;
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+        .form-input {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(201,169,110,0.25);
+            color: var(--ivory);
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 16px;
+            padding: 14px 16px;
+            outline: none;
+            border-radius: 0;
+            -webkit-appearance: none;
+            transition: border-color 0.3s;
+        }
+        .form-input:focus { border-color: var(--gold); }
+        .form-input::-webkit-calendar-picker-indicator { filter: invert(0.7); }
+        .form-note {
+            font-size: 11px;
+            color: var(--ivory-dim);
+            margin-top: 8px;
+            opacity: 0.6;
+        }
+        .btn-read {
+            width: 100%;
+            background: linear-gradient(135deg, #7a3a55 0%, #b05a78 100%);
+            border: none;
+            color: var(--ivory);
+            font-family: 'Noto Serif JP', serif;
+            font-size: 15px;
+            font-weight: 400;
+            letter-spacing: 5px;
+            padding: 18px;
+            cursor: pointer;
+            margin-top: 24px;
+            transition: opacity 0.3s;
+        }
+        .btn-read:hover { opacity: 0.85; }
+
+        /* ── 結果 ── */
+        #result { display: none; padding-bottom: 80px; }
+        #result.show { display: block; animation: fadeUp 0.8s ease; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .sign-header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+        .sign-symbol { font-size: 52px; margin-bottom: 10px; }
+        .sign-name {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 22px;
+            font-weight: 300;
+            letter-spacing: 5px;
+            color: var(--gold-light);
+        }
+        .sign-dates {
+            font-size: 11px;
+            color: var(--ivory-dim);
+            letter-spacing: 2px;
+            margin-top: 6px;
+        }
+        .sign-element {
+            font-size: 11px;
+            color: var(--gold);
+            letter-spacing: 2px;
+            margin-top: 4px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 28px 24px;
+            margin-bottom: 16px;
+        }
+        .card-label {
+            font-size: 10px;
+            letter-spacing: 4px;
+            color: var(--gold);
+            margin-bottom: 18px;
+        }
+        .card-body {
+            font-size: 14px;
+            line-height: 2.4;
+            color: var(--ivory);
+            white-space: pre-line;
+        }
+
+        /* バーズからの問い */
+        .q-card {
+            background: rgba(201,169,110,0.05);
+            border: 1px solid rgba(201,169,110,0.3);
+            padding: 32px 24px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        .q-label {
+            font-size: 10px;
+            letter-spacing: 4px;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+        .q-text {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 16px;
+            font-weight: 300;
+            line-height: 2.4;
+            color: var(--ivory);
+            white-space: pre-line;
+        }
+        .q-note {
+            font-size: 11px;
+            color: var(--ivory-dim);
+            margin-top: 16px;
+            opacity: 0.6;
+            line-height: 1.8;
+        }
+
+        /* 月星座 ぼかし */
+        .moon-card {
+            position: relative;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 28px 24px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        .moon-blur { filter: blur(7px); pointer-events: none; user-select: none; }
+        .moon-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(to bottom, transparent 20%, rgba(14,6,18,0.96) 65%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 24px;
+        }
+        .moon-overlay p {
+            font-size: 12px;
+            color: var(--ivory-dim);
+            text-align: center;
+            line-height: 1.9;
+        }
+        .moon-overlay span {
+            display: block;
+            font-size: 12px;
+            color: var(--gold);
+            letter-spacing: 2px;
+            margin-top: 4px;
+        }
+
+        /* LINE CTA */
+        .line-section { text-align: center; }
+        .line-lead {
+            font-size: 13px;
+            color: var(--ivory-dim);
+            line-height: 2.2;
+            margin-bottom: 20px;
+        }
+        .line-lead strong {
+            color: var(--ivory);
+            font-weight: 400;
+        }
+        .btn-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            background: var(--line-green);
+            border: none;
+            color: white;
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            padding: 18px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: filter 0.3s;
+            border-radius: 2px;
+        }
+        .btn-line:hover { filter: brightness(1.1); }
+        .btn-line svg { flex-shrink: 0; }
+
+        /* オラクルカード */
+        .oracle-card {
+            background: linear-gradient(135deg, rgba(180,80,110,0.12), rgba(201,169,110,0.08));
+            border: 1px solid rgba(201,169,110,0.4);
+            padding: 36px 24px;
+            margin-bottom: 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .oracle-card::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(ellipse, rgba(201,169,110,0.05) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .oracle-meta {
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--ivory-dim);
+            margin-bottom: 16px;
+            opacity: 0.6;
+        }
+        .oracle-label {
+            font-size: 10px;
+            letter-spacing: 5px;
+            color: var(--gold);
+            margin-bottom: 24px;
+        }
+        .oracle-text {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 15px;
+            font-weight: 300;
+            line-height: 2.6;
+            color: var(--ivory);
+            white-space: pre-line;
+        }
+        .oracle-moon-badge {
+            display: inline-block;
+            font-size: 11px;
+            color: var(--gold);
+            border: 1px solid rgba(201,169,110,0.3);
+            padding: 4px 12px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        /* コピーブロック */
+        .copy-block {
+            margin-bottom: 16px;
+        }
+        .copy-instruction {
+            font-size: 12px;
+            color: var(--ivory-dim);
+            text-align: center;
+            line-height: 2;
+            margin-bottom: 12px;
+        }
+        .copy-instruction strong { color: var(--gold); font-weight: 400; }
+        .copy-preview {
+            background: rgba(255,255,255,0.03);
+            border: 1px dashed rgba(201,169,110,0.25);
+            padding: 20px;
+            font-size: 12px;
+            line-height: 2;
+            color: var(--ivory-dim);
+            white-space: pre-line;
+            border-radius: 2px;
+            margin-bottom: 12px;
+            user-select: all;
+        }
+        .btn-copy {
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 13px;
+            letter-spacing: 3px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-copy:hover { background: rgba(201,169,110,0.08); }
+        .btn-copy.copied {
+            background: rgba(201,169,110,0.15);
+            border-color: var(--gold-light);
+            color: var(--gold-light);
+        }
+
+        /* ── 性別ラジオ ── */
+        .gender-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .gender-label {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 1px solid rgba(201,169,110,0.25);
+            padding: 11px 0;
+            cursor: pointer;
+            font-size: 13px;
+            letter-spacing: 2px;
+            color: var(--ivory-dim);
+            transition: all 0.25s;
+            border-radius: 2px;
+        }
+        .gender-label input { display: none; }
+        .gender-label.selected {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(201,169,110,0.07);
+        }
+
+        .sign-off {
+            text-align: center;
+            font-size: 11px;
+            color: var(--ivory-dim);
+            letter-spacing: 4px;
+            margin-top: 48px;
+            opacity: 0.4;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 10px;
+            color: var(--ivory-dim);
+            opacity: 0.25;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="stars"></div>
+
+<div class="wrap">
+
+    <!-- ヒーロー -->
+    <section class="hero">
+        <div class="badge">ERIKO GOTO × HOROSCOPE × ACCESS BARS</div>
+        <p style="font-size:10px;letter-spacing:2px;color:var(--ivory-dim);opacity:0.65;margin-bottom:28px;margin-top:-20px;">えりぷよ｜フェムケア &amp; 脳サロン</p>
+        <h1>占いじゃない。<br>あなたが、<br><em>あなたに戻るツール。</em></h1>
+        <p>誰にも言えない気持ちを抱えているあなたへ。<br>正しい・間違いじゃなく、<br>「私は本当は何を求めているの？」<br>その問いから、目覚めが始まる。</p>
+        <div class="divider">✦ ✦ ✦</div>
+    </section>
+
+    <!-- フォーム -->
+    <section class="form-wrap">
+        <div class="form-card">
+            <div class="gender-row" id="gender-row">
+                <label class="gender-label selected" id="gl-f" onclick="selectGender('f')">
+                    <input type="radio" name="gender" value="f" checked> ♀ 女性
+                </label>
+                <label class="gender-label" id="gl-m" onclick="selectGender('m')">
+                    <input type="radio" name="gender" value="m"> ♂ 男性
+                </label>
+            </div>
+            <label class="form-label" for="bd">BIRTH DATE</label>
+            <input type="date" id="bd" class="form-input">
+            <div style="margin-top:16px;">
+                <label class="form-label" for="bt">BIRTH TIME <span style="opacity:0.4;font-size:9px;letter-spacing:1px;">任意</span></label>
+                <input type="time" id="bt" class="form-input">
+                <p class="form-note">出生時間がわからない場合は空欄でOK（太陽星座で鑑定します）</p>
+            </div>
+            <button class="btn-read" onclick="calculate()">目 覚 め を 読 む</button>
+        </div>
+    </section>
+
+    <!-- 結果 -->
+    <section id="result">
+
+        <!-- 星座ヘッダー -->
+        <div class="sign-header">
+            <div class="sign-symbol" id="sym"></div>
+            <div class="sign-name" id="sname"></div>
+            <div class="sign-dates" id="sdates"></div>
+            <div class="sign-element" id="selement"></div>
+        </div>
+
+        <!-- 太陽星座メッセージ -->
+        <div class="card">
+            <div class="card-label">☀ SUN SIGN — あなたの愛のパターン</div>
+            <div class="card-body" id="sun-msg"></div>
+        </div>
+
+        <!-- アセンダント（出生時間入力時のみ） -->
+        <div class="card" id="asc-card" style="display:none;">
+            <div class="card-label">↑ ASCENDANT — 恋愛での見え方・第一印象</div>
+            <div class="card-body" id="asc-msg"></div>
+        </div>
+
+        <!-- アクセスバーズ問いかけ -->
+        <div class="q-card">
+            <div class="q-label">✦ 目覚めのための問いかけ</div>
+            <div class="q-text" id="q-text"></div>
+            <p class="q-note">答えを出さなくていい。<br>ジャッジもしなくていい。<br>この問いと、ただ一緒にいてみて。</p>
+        </div>
+
+        <!-- 今日のオラクルメッセージ（アセンダント判明時のみ） -->
+        <div class="oracle-card" id="oracle-card" style="display:none;">
+            <div class="oracle-meta" id="oracle-date"></div>
+            <div class="oracle-moon-badge" id="oracle-moon"></div>
+            <div class="oracle-label">✦ 今日のあなたへ</div>
+            <div class="oracle-text" id="oracle-text"></div>
+        </div>
+
+        <!-- コピーブロック -->
+        <div class="copy-block">
+            <p class="copy-instruction">
+                下のテキストをコピーして<br>
+                <strong>えりぷよのLINEに貼り付けて送ると</strong><br>
+                あなたの星座に合わせた詳しい鑑定が届きます
+            </p>
+            <div class="copy-preview" id="copy-text"></div>
+            <button class="btn-copy" id="copy-btn" onclick="copyText()">
+                <span id="copy-icon">📋</span>
+                <span id="copy-label">テ キ ス ト を コ ピ ー す る</span>
+            </button>
+        </div>
+
+        <!-- 月星座（ぼかし） -->
+        <div class="moon-card">
+            <div class="card-label">🌙 MOON SIGN — 感情の奥にあるもの</div>
+            <div class="card-body moon-blur">
+                あなたの月が示すのは、<br>
+                誰にも言えずに抱えてきた感情の根っこ。<br>
+                「なぜ私はこの人に惹かれるのか」<br>
+                「なぜこの状況から抜け出せないのか」<br>
+                その答えが、ここにある。<br>
+                本当の目覚めは、<br>
+                感情を知ることから始まる。
+            </div>
+            <div class="moon-overlay">
+                <p>月星座の詳しい読みと<br>あなただけの目覚めの問いかけは<br>LINEで受け取れます</p>
+                <span>LINE で 続 き を 受 け 取 る →</span>
+            </div>
+        </div>
+
+        <!-- LINE CTA -->
+        <div class="line-section">
+            <p class="line-lead">
+                誰にも話せなくても、ここでは話せる。<br>
+                <strong>月星座・金星の詳しい読み</strong>と、<br>
+                あなたの目覚めを深める問いかけを<br>
+                LINEでお届けします。
+            </p>
+            <a href="https://lin.ee/9gFD5ZY" class="btn-line" target="_blank">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.03 2 11c0 3.15 1.7 5.93 4.32 7.65L5.5 22l3.53-1.85C10.3 20.7 11.13 21 12 21c5.52 0 10-4.03 10-9S17.52 2 12 2z"/></svg>
+                LINE で 詳 し い 鑑 定 を 受 け 取 る
+            </a>
+        </div>
+
+        <div class="sign-off">セクシーサンキュー</div>
+
+    </section>
+
+</div>
+
+<footer>© えりぷよ / 後藤絵里子 All rights reserved.</footer>
+
+<script>
+// 星を生成
+(function(){
+    const el = document.getElementById('stars');
+    for(let i=0;i<130;i++){
+        const s = document.createElement('div');
+        s.className = 'star';
+        const sz = Math.random()*2+0.5;
+        s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${(Math.random()*4+2).toFixed(1)}s;--o:${(Math.random()*0.5+0.1).toFixed(2)};animation-delay:${(Math.random()*6).toFixed(1)}s`;
+        el.appendChild(s);
+    }
+})();
+
+// 星座データ
+const SIGNS = [
+    {
+        name:'山羊座', sym:'♑', dates:'12/22〜1/19', el:'土のサイン',
+        msg:`頑張ることが当たり前になっていない？\n\n山羊座のあなたは、着実に積み上げることが得意。\nでも「努力しないと愛されない」という\n思い込みを、いつの間にか背負っていたりする。\n\n今日くらい、何も頑張らなくていい。\nそのままのあなたが、すでに十分。`,
+        q:`「頑張らなくても愛される」\nそれを信じることを許したら、\n何が変わりますか？`
+    },
+    {
+        name:'水瓶座', sym:'♒', dates:'1/20〜2/18', el:'風のサイン',
+        msg:`誰とも違う視点で世界を見ているあなた。\nその感性は才能。\n\nでも「わかってもらえない」と\n先に壁を作っていることはない？\n\n独自性と孤独は別のもの。\nあなたを深く理解する人は、必ず存在する。`,
+        q:`もし完全にわかり合える人が\nあなたの前に現れたとしたら、\n最初に何を話しますか？`
+    },
+    {
+        name:'魚座', sym:'♓', dates:'2/19〜3/20', el:'水のサイン',
+        msg:`境界線が溶けるような共感力を持つあなた。\n\nその敏感さは弱さじゃない。\n愛の深さの証。\n\nただ、自分を守ることも\n愛のかたちだと知っていて。\nあなたが満たされてこそ、\n誰かを満たせる。`,
+        q:`自分自身を\n「完全に受け取る」ことを\n今日から許したら、何が変わる？`
+    },
+    {
+        name:'牡羊座', sym:'♈', dates:'3/21〜4/19', el:'火のサイン',
+        msg:`情熱的に動くことが得意なあなた。\nその強さに、みんなが惹かれる。\n\nでも「受け取ること」を\nどれだけ自分に許してきた？\n\n与えることに慣れすぎて、\n愛される隙を\n埋めてしまっていないか。\nそっと確かめてみて。`,
+        q:`もし「受け取ること」を\n完全に許したら、\nあなたの人生はどう変わりますか？`
+    },
+    {
+        name:'牡牛座', sym:'♉', dates:'4/20〜5/20', el:'土のサイン',
+        msg:`豊かさへの感性を持つあなた。\n美しいもの、心地よいものを\n本能的に知っている。\n\nただ、執着という名の鎧を\n脱いだとき、何が見える？\n\n手放した先に、\nもっと大きな愛が待っているかもしれない。`,
+        q:`「これ以上は手放せない」と\n感じているものを一つ手放したら、\n何が軽くなりますか？`
+    },
+    {
+        name:'双子座', sym:'♊', dates:'5/21〜6/20', el:'風のサイン',
+        msg:`言葉で世界を作る才能があるあなた。\n知性と好奇心が魅力。\n\nでも言葉にならない感情を、\nどれだけ許容できている？\n\n頭で考えることをやめて\n体の声に耳を澄ませると、\n本当に望むものが見えてくる。`,
+        q:`今、頭ではなく体が\n「行きたい」と感じているのは、\nどんな場所・関係・状態ですか？`
+    },
+    {
+        name:'蟹座', sym:'♋', dates:'6/21〜7/22', el:'水のサイン',
+        msg:`深く愛し、深く守るあなた。\nその愛情の深さは本物。\n\nでもその愛は、\n自分自身にも向いている？\n\n誰かを守ることに一生懸命なあなたへ。\n今日は、自分を一番に大切にしていい。`,
+        q:`もし「自分を最優先にする」\nことを完全に許したら、\n最初に何をしますか？`
+    },
+    {
+        name:'獅子座', sym:'♌', dates:'7/23〜8/22', el:'火のサイン',
+        msg:`輝くことを恐れないで。\n\nあなたが持つ存在感と温かさは、\n誰かの光になっている。\n\n「目立ちすぎかな」って遠慮することはない。\nあなたが輝くことで、\n誰かが自分を許せるようになる。`,
+        q:`「輝いてもいい」と\n完全に許したとき、\nあなたは何をしていますか？`
+    },
+    {
+        name:'乙女座', sym:'♍', dates:'8/23〜9/22', el:'土のサイン',
+        msg:`細部まで気を配るあなた。\nその誠実さと完璧主義は美しい。\n\nでも「このままで十分」\nという声を、どれだけ聞けている？\n\n完璧じゃなくても愛される。\nむしろ不完全さが、\n人を惹きつけることも。`,
+        q:`「完璧じゃなくていい」\nと自分に言ったとき、\n何が緩みますか？`
+    },
+    {
+        name:'天秤座', sym:'♎', dates:'9/23〜10/22', el:'風のサイン',
+        msg:`バランスを保とうとするあなたへ。\n\n揺れることも、美しさのひとつ。\n完璧なバランスを求めて\n本音を殺していない？\n\n「私はこうしたい」と\n言える関係こそが、本当の愛。`,
+        q:`あなたが本当は望んでいるのに\n「言えていない」ことは、何ですか？`
+    },
+    {
+        name:'蠍座', sym:'♏', dates:'10/23〜11/21', el:'水のサイン',
+        msg:`深く、濃く、全部か全部かで愛するあなた。\n\n手放すことへの怖さ、感じる？\nでもその怖さの奥に、\n変容のドアがある。\n\n今手放せないものが、\n実はあなたを縛っている鎖かもしれない。`,
+        q:`今「手放したら終わる」と思っているものを\n手放したとき、\n本当は何が始まりますか？`
+    },
+    {
+        name:'射手座', sym:'♐', dates:'11/22〜12/21', el:'火のサイン',
+        msg:`自由と冒険を愛するあなた。\nその好奇心と広い視野が魅力。\n\nでも本当に怖いのは\n「つながり」じゃない？\n\n自由でいながら、\n深くつながることも\nできると知っていて。`,
+        q:`「自由」と「深いつながり」\n両方を手にした自分は、\nどんな人生を生きていますか？`
+    }
+];
+
+// ── 今日の月星座を計算 ──────────────────────
+function getTodayMoonSign() {
+    const now = new Date();
+    const y = now.getFullYear(), m = now.getMonth()+1, d = now.getDate();
+    const h = now.getHours(), min = now.getMinutes();
+    const a = Math.floor((14-m)/12), yy = y+4800-a, mm = m+12*a-3;
+    let JD = d + Math.floor((153*mm+2)/5) + 365*yy
+           + Math.floor(yy/4) - Math.floor(yy/100) + Math.floor(yy/400) - 32045;
+    JD += (h + min/60 - 9 - 12) / 24; // JST→UTC
+    const T = (JD - 2451545.0) / 36525;
+    let lon = 218.3165 + 481267.8813*T - 1.3972*Math.cos((93.27+483202.02*T)*Math.PI/180);
+    return degToSign(((lon%360)+360)%360);
+}
+
+// ── オラクルメッセージ 144通り（ASC × 今日の月） ──
+const ORACLE = {
+'牡羊座':{
+'牡羊座':`今日は火×火。\nエネルギーが燃え上がる日。\n\nでも強さを証明しなくていい。\n今日は誰かに「手伝って」と言ってみて。\nそれができたら、それが本当の勇気。`,
+'牡牛座':`今日の月は感覚と豊かさを求めている。\nいつも先へ先へ動くあなたへ。\n\n今日だけはスローダウンして。\n美味しいもの、心地よいものを、ゆっくり味わって。\nその時間が、あなたを満たす。`,
+'双子座':`言葉とアイデアが飛び交う一日。\n頭が忙しくなりそう。\n\nでも全部拾わなくていい。\n心に残った一言だけを大切に。\n今日の答えは、静かな場所にある。`,
+'蟹座':`感情が揺れやすい一日。\n強くあろうとするあなたへ。\n\n今日は弱さも持っていていい。\n誰かに甘えることを、自分に許して。\nそれが受け取る練習になる。`,
+'獅子座':`今日は輝くエネルギーが満ちている。\nあなたの存在感、もう遠慮しなくていい。\n\n目立ってもいい。愛されてもいい。\n今日のあなたは、本来の姿に近い。`,
+'乙女座':`今日は丁寧さが力になる日。\nいつもスピード重視のあなたへ。\n\n一つのことに、ゆっくり向き合ってみて。\n細部に宿る美しさに、今日は気づける。`,
+'天秤座':`関係性に光が当たる一日。\n一人で抱えてきたことはない？\n\n今日は誰かに話してみて。\n助けを求めることは弱さじゃない。\nつながりを受け取る日。`,
+'蠍座':`今日は深いところが動く日。\n手放せないでいたもの、感じる？\n\n今日こそ、その手を少しだけ緩めて。\n怖くても、その先に新しい自分がいる。`,
+'射手座':`自由と拡大のエネルギー。\nあなたの行動力と合わさって、どこまでも行ける。\n\nでも遠くを見る前に、今ここを確認して。\n足元にあるものも、同じくらい大切。`,
+'山羊座':`今日は行動が実を結ぶ日。\nあなたのエネルギーが現実に根を張る。\n\nただ、結果だけを追わなくていい。\nプロセスの中にも、愛がある。`,
+'水瓶座':`今日は「こうじゃなきゃ」を手放す日。\nあなたらしいやり方で、いい。\n\n人と違っていい。\n型を破る勇気が、新しい扉を開ける。`,
+'魚座':`今日は感受性が高まる日。\nいつも動き続けるあなたへ。\n\n今日は感じることをやめないで。\n体が何かを知っている。\nその声を、聞いてあげて。`
+},
+'牡牛座':{
+'牡羊座':`今日は衝動のエネルギーが来ている。\nいつもゆっくり動くあなたへ。\n\n今日は直感で動いてみて。\n考える前に、体が知っていることがある。`,
+'牡牛座':`今日は土×土。\n感覚と豊かさのエネルギーが倍になる。\n\n今日は思いっきり、心地よさを選んで。\n「これが好き」という感覚を、もっと信頼していい。`,
+'双子座':`今日は情報と刺激が多い一日。\nゆったりしていたいのに、騒がしく感じるかも。\n\nいいよ、全部に応えなくて。\n自分のペースで、必要なものだけ選んで。`,
+'蟹座':`感情と感覚が深まる一日。\n誰かと深く繋がりたくなるかもしれない。\n\n今日の「会いたい」という気持ち、\nそのまま伝えてみてもいい。`,
+'獅子座':`今日は表現のエネルギーが来ている。\nあなたが持つ美しさ、隠さないで。\n\n自分の魅力に、今日は正直に。\n輝くことは、許されている。`,
+'乙女座':`今日は整理と浄化の日。\nあなたの丁寧さが、さらに活きる。\n\n空間を整えると、心も整う。\n今日は「いらないもの」を手放してみて。`,
+'天秤座':`美と関係性のエネルギー。\nあなたの感性が、人を惹きつける日。\n\n今日は「好き」をちゃんと言ってみて。\n受け取ることと与えること、バランスを感じて。`,
+'蠍座':`今日は深いエネルギーが流れている。\nあなたの中の官能性が、目を覚ます日。\n\n自分の体に、ちゃんと触れてあげた？\n感じることを、今日は許して。`,
+'射手座':`今日は遠くを見たくなる日。\nいつもの場所、いつもの人。\n\nちょっと違う風景を見てみて。\n新しい豊かさが、そこにあるかもしれない。`,
+'山羊座':`今日は努力が形になる日。\nあなたの粘り強さが報われる。\n\nただ、受け取ることも忘れずに。\n努力の分だけ、豊かさを受け取っていい。`,
+'水瓶座':`今日はいつもと違うことをしたくなる日。\nルーティンを少しだけ崩してみて。\n\n「いつもこうだから」を手放したとき、\n新しい感覚が生まれる。`,
+'魚座':`今日は夢のような感受性が漂う日。\nあなたの感覚がさらに研ぎ澄まされる。\n\n美しいものに、たっぷり触れて。\n今日のあなたは、深く感じられる。`
+},
+'双子座':{
+'牡羊座':`今日は行動のエネルギーが来ている。\n考えてばかりのあなたへ。\n\n今日は一つだけ、考える前に動いてみて。\n頭じゃなく体に聞いた答えが、本当の答えかもしれない。`,
+'牡牛座':`今日はゆっくりする許可が出ている。\nいつも情報を処理し続けるあなたへ。\n\n今日は何もインプットしない時間を作って。\n静かな中に、大切なことが浮かび上がる。`,
+'双子座':`今日は風×風。\n言葉とアイデアが止まらない日。\n\nそのエネルギー、誰かと共有してみて。\n会話の中で、新しい自分を発見できる。`,
+'蟹座':`今日は感情が優先される日。\n頭で考えることをやめて、感じることを選んで。\n\n泣きたければ泣いていい。\n感情は弱さじゃない。処理する必要もない。`,
+'獅子座':`今日は言葉が輝く日。\nあなたの言葉には、人を動かす力がある。\n\n今日は「言いたかったこと」を言ってみて。\nその言葉が、誰かの心を開く。`,
+'乙女座':`今日は情報を整理する日。\n散らばったアイデアを一つにまとめて。\n\n完璧じゃなくていい。\n「だいたいこんな感じ」で進んでいい。`,
+'天秤座':`今日はコミュニケーションが活発になる日。\nあなたの言葉が、橋を架ける。\n\n伝えたかった気持ち、今日なら届く。\n言葉にする勇気を持って。`,
+'蠍座':`今日は深い言葉が生まれる日。\n本音を話したくなる。\n\n誰かに「本当のこと」を話してみて。\n深い会話が、心を解放する。`,
+'射手座':`今日は視野が広がる日。\n知らない世界を探求したくなる。\n\n新しい本、新しい場所、新しい人。\nあなたの好奇心を、思いっきり解放して。`,
+'山羊座':`今日はアイデアを形にする日。\n考えたことを、一つだけ実行してみて。\n\n完璧を待たなくていい。\n動きながら、完成していく。`,
+'水瓶座':`今日は革新的なアイデアが生まれる日。\n「そんなのおかしい」と思ったことが、正解かもしれない。\n\nあなたの独自の視点を、信じて。`,
+'魚座':`今日は直感が言葉になる日。\n論理より感覚を優先させて。\n\n説明できないけど「なんかこっち」という感覚。\nそれが今日の羅針盤。`
+},
+'蟹座':{
+'牡羊座':`今日は行動のエネルギーが来ている。\n感情を抱えたまま、動いてみて。\n\n完璧な状態じゃなくていい。\n今の自分で、一歩だけ踏み出して。`,
+'牡牛座':`今日はゆっくり自分を大切にする日。\nいつも誰かのために動くあなたへ。\n\n今日は自分のために、美味しいものを食べて。\n自分を満たすことが、周りを満たすことになる。`,
+'双子座':`今日は頭が忙しくなりそう。\n感情と思考がぐるぐるするかもしれない。\n\nいいよ、整理しなくて。\n今日は感じたことを、そのまま受け取って。`,
+'蟹座':`今日は感情のエネルギーが2倍。\n深く感じる一日になる。\n\nその感情、全部正しい。\n誰かに「寂しい」と言える日かもしれない。`,
+'獅子座':`今日は愛を表現する日。\n守るだけじゃなく、輝くことも愛のかたち。\n\n今日は「大好き」をちゃんと言ってみて。\nその言葉が、あなた自身も満たす。`,
+'乙女座':`今日は心の整理をする日。\n感情の断捨離ができる。\n\nずっと持ち続けてきた「怒り」や「悲しみ」。\n今日は、そっと置いてきていい。`,
+'天秤座':`今日は関係性を見直す日。\nこの人といて、私は満たされている？\n\n与えてばかりじゃない？\n受け取ることを、自分に許して。`,
+'蠍座':`今日は感情の深海に潜る日。\n怖くても大丈夫。\n\nその奥にあるものは、弱さじゃない。\n本当の自分の声が、そこにある。`,
+'射手座':`今日は少し外に出たくなる日。\nいつもの「守る」から「探求する」へ。\n\n知らない場所に行ってみて。\n新しい景色が、心を軽くする。`,
+'山羊座':`今日は感情を形にする日。\n「感じていること」を言葉にしてみて。\n\n誰かに伝えなくていい。\n自分のために書くだけでいい。`,
+'水瓶座':`今日はいつもと違う感情の動き方をする日。\n「なんかおかしい」と感じたら、それが本音かもしれない。\n\n感情に正解はない。\nあなたが感じていることが、全て正しい。`,
+'魚座':`今日は深い共感の日。\n感じすぎてしまうかもしれない。\n\nいいよ、全部感じて。\nただ、それが「自分のもの」か確かめて。\n拾いすぎていない？`
+},
+'獅子座':{
+'牡羊座':`今日は火×火のエネルギー。\n存在感が爆発する日。\n\n目立つことを、今日は許して。\nあなたが輝くことで、誰かが救われる。`,
+'牡牛座':`今日は美しさと豊かさのエネルギー。\nあなたの輝きに、深みが加わる。\n\n自分を飾ることを楽しんで。\n外側が整うと、内側も輝く。`,
+'双子座':`今日は言葉で輝く日。\nあなたの表現力が、さらに増す。\n\n話したかったこと、書きたかったこと。\n今日は思いっきり表現していい。`,
+'蟹座':`今日は感情が輝きに変わる日。\n傷ついた経験が、人の心を動かす言葉になる。\n\n弱さを見せることが、本当の強さ。\n今日は心を、少し開いてみて。`,
+'獅子座':`今日は輝きが2倍になる日。\nどこにいても、あなたの存在が光る。\n\nその光を、遠慮しないで。\n今日はただ、在るだけでいい。`,
+'乙女座':`今日は細部まで美しくなる日。\nあなたの表現に、繊細さが加わる。\n\n完璧を目指すより、自分らしさを大切に。\nその「個性」が、あなたの最大の輝き。`,
+'天秤座':`今日は美しい関係性を築く日。\nあなたの魅力が、人を惹きつける。\n\n受け取ることを、今日は練習して。\n愛される経験が、あなたをもっと輝かせる。`,
+'蠍座':`今日は深い輝きの日。\n表面だけじゃなく、奥から光る日。\n\n隠していた魅力を、今日は解放していい。\nその深さが、人を虜にする。`,
+'射手座':`今日は自由に輝く日。\nどこへでも行ける。誰とでも輝ける。\n\n「こうあるべき」を手放して。\n自由な自分が、一番輝いている。`,
+'山羊座':`今日は努力が輝きになる日。\nこれまで積み上げてきたものが、花開く。\n\n認められていい。\n褒められたとき、素直に受け取って。`,
+'水瓶座':`今日は個性が輝く日。\nみんなと同じじゃなくていい。\n\nあなただけの輝き方がある。\nその独自性を、誇りに思っていい。`,
+'魚座':`今日は神秘的な輝きの日。\n言葉にならない美しさが、あなたから溢れる。\n\n感じるままに存在していい。\n今日のあなたは、ただいるだけで美しい。`
+},
+'乙女座':{
+'牡羊座':`今日は行動のエネルギーが来ている。\n完璧を待たずに、動いてみて。\n\n「準備ができてから」は、永遠に来ないかもしれない。\n今の自分で、十分。`,
+'牡牛座':`今日は感覚を信じる日。\nデータより、体の感覚を優先して。\n\n「なんかいい感じ」という直感。\nそれも、立派な判断基準。`,
+'双子座':`今日は情報が多くなりそう。\n全部処理しなくていい。\n\n今日必要なものだけ、選んで。\n「捨てる」ことも、大切な作業。`,
+'蟹座':`今日は感情が優先される日。\nいつも分析するあなたへ。\n\n今日だけは、感じることを先にして。\n「なぜ？」より「どう感じる？」を。`,
+'獅子座':`今日は表現のエネルギーが来ている。\n完璧じゃなくても、出していい。\n\n70%の完成度で出したものが、\n誰かの100%になることがある。`,
+'乙女座':`今日は土×土のエネルギー。\n丁寧さと細かさが倍になる。\n\nでも自分に厳しくなりすぎないで。\n今日の「できた」を、ちゃんと褒めて。`,
+'天秤座':`今日は関係性を整理する日。\nこの関係、心地よい？重い？\n\n正直に感じていいよ。\n「このままでいいか」を問い直す日。`,
+'蠍座':`今日は深いところを整理する日。\n見たくなかったものと、向き合える日。\n\n怖くない。\nそれを見た先に、本当の自由がある。`,
+'射手座':`今日は完璧主義を手放す日。\n「だいたいでいい」を練習して。\n\n広い視点で見たとき、\n細かいミスは誰も気にしていない。`,
+'山羊座':`今日は努力が報われる日。\nあなたの丁寧な仕事が、認められる。\n\n受け取っていい。\n「たいしたことない」と言わないで。`,
+'水瓶座':`今日は「正解」を手放す日。\nいつもの基準を外してみて。\n\n「これでいいのかな」じゃなく、\n「これが好き」で選んでいい。`,
+'魚座':`今日は直感に従う日。\n論理じゃなく感覚で動いてみて。\n\n「なんとなく」は、実は深い知性。\n今日はその声を、信じて。`
+},
+'天秤座':{
+'牡羊座':`今日は行動のエネルギーが来ている。\nバランスを取ろうとしなくていい。\n\n今日は自分の「やりたい」を優先して。\n誰かのためじゃなく、自分のために動く日。`,
+'牡牛座':`今日は感覚と美のエネルギー。\nあなたの審美眼が、さらに磨かれる。\n\n好きなものに囲まれて。\n美しさを楽しむことが、今日の仕事。`,
+'双子座':`今日はコミュニケーションが活発になる日。\nあなたの言葉が、橋を架ける。\n\n言いたかったこと、今日なら言える。\n本音を話す練習をして。`,
+'蟹座':`今日は感情が揺れやすい日。\nバランスを保とうとしなくていい。\n\n揺れてもいい。\n不安定な自分を、責めないで。`,
+'獅子座':`今日は美しく輝く日。\nあなたの魅力が、さらに開花する。\n\n選ばれる側じゃなく、選ぶ側に立って。\nあなたは十分、選ぶ資格がある。`,
+'乙女座':`今日は関係性を整える日。\nモヤモヤしていたことを、丁寧に言葉にして。\n\n「なんとなく嫌」の正体を、見つけて。\n言語化できたとき、半分解決している。`,
+'天秤座':`今日は風×風のエネルギー。\n関係性が動く日。\n\n「この関係、本当にいい？」\n今日は正直に、自分に問いかけて。`,
+'蠍座':`今日は関係の深いところが動く日。\n表面的なバランスじゃなく、本質を見て。\n\nこの人との関係で、私は本当に満たされている？\nその答えを、体に聞いてみて。`,
+'射手座':`今日は自由な風が吹いている。\nバランスより、自分らしさを選んで。\n\n「みんなはこうしてる」は関係ない。\n私はどうしたい？`,
+'山羊座':`今日は関係性を現実にする日。\n「いつか」を「今日」にできる。\n\n一歩踏み出すことを、自分に許して。\nあなたの選択が、現実を作る。`,
+'水瓶座':`今日は新しい関係性の日。\nいつもと違う人と話してみて。\n\n「この人、なんか面白い」という直感。\nそれに従っていい。`,
+'魚座':`今日は深い共感の日。\nあなたの優しさが、誰かの心に届く。\n\nでも相手に合わせすぎていない？\n今日は自分の感覚を、大切にして。`
+},
+'蠍座':{
+'牡羊座':`今日は行動のエネルギーが来ている。\nずっと考え続けてきたこと、今日動いてみて。\n\n怖くても大丈夫。\n動いた先に、新しい景色がある。`,
+'牡牛座':`今日は感覚と豊かさのエネルギー。\nあなたの官能性が、深まる日。\n\n自分の体を、丁寧に扱って。\n感じることは、罪じゃない。`,
+'双子座':`今日は言葉が深くなる日。\nあなたの言葉には、いつも重みがある。\n\n今日はその重みを、言葉にして。\n深い言葉が、誰かの心を動かす。`,
+'蟹座':`今日は感情の深海に潜る日。\n一番深いところにあるもの、何だろう。\n\n怖くていい。\nその奥にあるのは、あなたの本当の欲望。`,
+'獅子座':`今日は深い輝きの日。\n魂から光る。\n\n隠していた魅力を、今日は解放していい。\nその深さが、人を虜にする。`,
+'乙女座':`今日は深いところを整理する日。\nずっと見ないようにしていたものと、向き合える。\n\n今日のあなたには、その強さがある。\n見た先に、本当の自由がある。`,
+'天秤座':`今日は関係の深いところを見る日。\n表面的な調和じゃなく、本音を見て。\n\nこの関係で、私は本当に満たされている？\nその答えに、正直になっていい。`,
+'蠍座':`今日は水×水のエネルギー。\n感情と変容が深まる日。\n\n何かを手放す準備ができている。\nその扉、今日開けていい。`,
+'射手座':`今日は遠くを見たくなる日。\n深く潜ることも大事だけど、\n\n今日は少し顔を上げて。\n視野が広がると、新しい可能性が見える。`,
+'山羊座':`今日は深い変化が形になる日。\nずっと積み上げてきたものが、変容する。\n\nそれは失うことじゃない。\nより本物になっていくこと。`,
+'水瓶座':`今日は革命的な変化の日。\nいつものパターンを、根本から変えられる。\n\n「本当はこうしたかった」を、今日から始めて。`,
+'魚座':`今日は深い感受性の日。\n見えないものが、見えてくる。\n\nその直感を信じて。\n今日のあなたは、何かを知っている。`
+},
+'射手座':{
+'牡羊座':`今日は火×火のエネルギー。\n自由と行動が爆発する日。\n\nどこへでも行ける。何でもできる。\n今日のあなたに、制限はない。`,
+'牡牛座':`今日は感覚の豊かさを感じる日。\nいつも動き続けるあなたへ。\n\n今日だけは、止まってみて。\n旅の途中でも、景色を楽しんでいい。`,
+'双子座':`今日は知識と冒険のエネルギー。\nあなたの好奇心が、どこまでも広がる。\n\n知らなかった世界へ、踏み出して。\n好奇心は、最強のコンパス。`,
+'蟹座':`今日は感情が揺れやすい日。\n自由を求めるあなたの中に、\n\n「本当はつながりたい」という声がある。\nその声を、今日は無視しないで。`,
+'獅子座':`今日は自由に輝く日。\n今日は特に、あなたの冒険心が人を惹きつける。\n\n行きたい場所に、誰かを連れて行って。\nあなたの「楽しい」が、愛になる。`,
+'乙女座':`今日は細部に目を向ける日。\nいつも大きな絵を描くあなたへ。\n\n今日は小さなことに、丁寧に向き合って。\n細部の中に、大切なものが隠れている。`,
+'天秤座':`今日は関係性と自由のバランスの日。\n「自由でいたい」と「深くつながりたい」。\n\nどちらも本物。\n両方を持っていていい。`,
+'蠍座':`今日は深く潜る日。\nいつも遠くを見るあなたへ。\n\n今日は内側を探検して。\n自分の中の未知の大陸が、あなたを待っている。`,
+'射手座':`今日は自由×自由のエネルギー。\n限界を超えていく日。\n\nどこまでも行っていい。\n今日のあなたに、制限はない。`,
+'山羊座':`今日は冒険が形になる日。\n夢を現実にするエネルギーがある。\n\n「いつかやりたいこと」を、今日一歩進めて。\n始めることで、道が開ける。`,
+'水瓶座':`今日は革新と自由のエネルギー。\nあなたらしい、誰も思いつかない方法で。\n\n「普通じゃない」が、あなたの強み。\nそれを全開にして。`,
+'魚座':`今日は直感が羅針盤になる日。\n地図より、感覚を信じて。\n\n「なんとなくこっち」という感覚が、\n今日は正解。`
+},
+'山羊座':{
+'牡羊座':`今日は行動のエネルギーが来ている。\n計画より先に、動いてみて。\n\n完璧なプランを待っていたら、\n永遠に始まらないかもしれない。`,
+'牡牛座':`今日は豊かさを味わう日。\nいつも結果を追うあなたへ。\n\n今日だけは、プロセスを楽しんで。\n「できた」じゃなく「楽しかった」を目指して。`,
+'双子座':`今日は情報と計画のエネルギー。\nあなたの戦略眼が、さらに冴える。\n\nただ、頭だけで動かないで。\n体の感覚も、一緒に連れて行って。`,
+'蟹座':`今日は感情が仕事に関係してくる日。\n「なんかやる気が出ない」は、大切なサイン。\n\n無理しないで。\n今日の感情が、明日の知恵になる。`,
+'獅子座':`今日は結果が輝く日。\nあなたの努力が、認められる。\n\n褒められたとき、素直に受け取って。\n「たいしたことない」と言わないで。`,
+'乙女座':`今日は土×土のエネルギー。\n着実さと丁寧さが倍になる。\n\nただ、自分に厳しくなりすぎないで。\n今日の「できた」を、ちゃんと認めて。`,
+'天秤座':`今日は関係性と目標のバランスの日。\n仕事も大事、でも人も大事。\n\n今日は「人」を優先してみて。\nつながりの中に、次の答えがある。`,
+'蠍座':`今日は深い変化が始まる日。\nこれまでのやり方を、根本から見直せる。\n\n変化した先に、もっと本物の自分がいる。\n怖くても大丈夫。`,
+'射手座':`今日は遠くを見る日。\n目の前の結果じゃなく、大きな夢を見て。\n\n5年後のあなたは何をしている？\nその答えが、今日の指針になる。`,
+'山羊座':`今日は土×土のエネルギーが最大になる日。\n何かを達成できる。\n\nただ、達成した後に「受け取る」ことを忘れずに。\n喜ぶ時間も、仕事のうち。`,
+'水瓶座':`今日は古いやり方を手放す日。\n「これが正しい」と思っていた方法、\n\n本当にそう？\n違うやり方で、もっとうまくいくかもしれない。`,
+'魚座':`今日は直感で動く日。\nデータより感覚を信じてみて。\n\n「なんかこれ、いい気がする」\nその感覚が、今日は正解。`
+},
+'水瓶座':{
+'牡羊座':`今日は行動と革新のエネルギー。\nあなたのユニークな視点が、世界を変える日。\n\n誰も思いつかなかった方法で、動いてみて。\n「普通じゃない」が、あなたの最大の武器。`,
+'牡牛座':`今日は感覚と安定のエネルギー。\nいつも変化を求めるあなたへ。\n\n今日は「いつもと同じ」を楽しんでみて。\n安心できる場所も、あっていい。`,
+'双子座':`今日は風×風のエネルギー。\nアイデアが止まらない日。\n\nその革新的なアイデア、誰かに話してみて。\n理解されなくても、それがあなたらしさ。`,
+'蟹座':`今日は感情が動く日。\nいつも感情を遠ざけるあなたへ。\n\n今日だけは、感じることを許して。\n感情は弱さじゃない。大切な情報だ。`,
+'獅子座':`今日は個性が輝く日。\nあなたらしさを、全開にしていい。\n\n「変わってる」と言われることが、褒め言葉の日。\nその個性が、人を惹きつける。`,
+'乙女座':`今日はアイデアを整理する日。\n革新的な考えを、実行できる形にして。\n\n「面白いけど無理」じゃなく、\n「どうやったらできる？」を考えて。`,
+'天秤座':`今日は新しい関係性の日。\nいつもとは違うコミュニティに顔を出してみて。\n\nあなたの独自の視点が、\n新しい仲間を引き寄せる。`,
+'蠍座':`今日は深い革命の日。\n表面的な変化じゃなく、根本から変える。\n\nあなたが「これはおかしい」と感じていること。\n今日から、変えていっていい。`,
+'射手座':`今日は自由×革新のエネルギー。\n限界なんてない。\n\n「こんなこと、できるかな」は禁句。\n「どうやったら、できる？」を問いかけて。`,
+'山羊座':`今日は革新を現実にする日。\nアイデアを形にするエネルギーがある。\n\n「いつかやる」を「今日やる」に変えて。\n一歩が、世界を変える。`,
+'水瓶座':`今日は風×風のエネルギーが最大になる日。\n革命的な変化が起きる可能性がある。\n\nあなたの直感を、信じて。\n「これだ」という感覚が来たら、動いて。`,
+'魚座':`今日は直感と革新が融合する日。\n論理じゃなく感覚で、新しいものを創って。\n\n「説明できないけど、これがいい」\nその感覚が、今日は正解。`
+},
+'魚座':{
+'牡羊座':`今日は行動のエネルギーが来ている。\n感じるだけじゃなく、動いてみて。\n\n「なんかいい感じ」という直感があるなら、\n今日はそれに従って動いて。`,
+'牡牛座':`今日は感覚が深まる日。\nあなたの感受性と感覚が融合して、\n\n深い喜びを感じられる。\n今日は美しいもの、美味しいもの、心地よいものを選んで。`,
+'双子座':`今日は言葉と感覚の日。\n言えなかったことを、言葉にしてみて。\n\n詩でもいい、日記でもいい。\n感じていることを形にすると、心が軽くなる。`,
+'蟹座':`今日は水×水のエネルギー。\n感情と感受性が深まる日。\n\nただ、拾いすぎないように。\n「これは私のもの？」と確かめて。`,
+'獅子座':`今日は夢のような美しさが輝く日。\nあなたから溢れる神秘的な魅力が、\n\n人を惹きつける。\n今日のあなたは、ただいるだけで美しい。`,
+'乙女座':`今日は感覚を整理する日。\n感じすぎて混乱していることがあるなら、\n\n今日は一つずつ丁寧に見ていって。\n「これは何？」と優しく問いかけて。`,
+'天秤座':`今日は深い共感の日。\nあなたの優しさが、誰かの心に届く。\n\nでも与えてばかりじゃない？\n今日は受け取ることを、自分に許して。`,
+'蠍座':`今日は深い海の底まで潜る日。\nあなたの感受性が、見えないものを見せてくれる。\n\nその直感を信じて。\n今日のあなたは、何かを知っている。`,
+'射手座':`今日は夢が広がる日。\n「こんなことが起きたらいいな」という想像。\n\nそれは夢じゃない、予言かもしれない。\n大きく夢見ることを、自分に許して。`,
+'山羊座':`今日は感覚を現実にする日。\n「なんとなく感じていたこと」を、形にできる。\n\n直感を信じて、一歩踏み出して。\n感じた通りに動いたとき、世界が応える。`,
+'水瓶座':`今日は直感と革新が融合する日。\nあなたが「なんかこれ違う」と感じていること。\n\n今日から、変えていっていい。\nその感覚は、正しい。`,
+'魚座':`今日は水×水のエネルギーが最大になる日。\n深く感じて、深く愛せる日。\n\nただ、自分を見失わないように。\n「私はどう感じている？」を忘れないで。`
+}};
+
+// アセンダントデータ（12星座）
+const ASC = {
+    '牡羊座': `外からは強く、エネルギッシュに見える。\nでもその強さが「近づきにくい」と思わせることも。\n\n本当は深く愛されたい繊細な部分がある。\nその鎧を少し脱いでみたとき、\n人はもっとあなたに惹きつけられる。`,
+    '牡牛座': `落ち着いた、安心感のある雰囲気を持つ。\nそこにいるだけで場が和む。\n\nでもその安定感の奥に、\n深い官能性と感受性が眠っている。\nそれを自分に許したとき、\n魅力はさらに開花する。`,
+    '双子座': `明るく、話しかけやすい印象。\n知的で面白い人だと思われる。\n\nでも本当の深さは、\n仲良くなってから初めて見せる。\n表と裏、その落差があなたの魅力。`,
+    '蟹座': `柔らかく、包み込むような雰囲気。\n「守りたい」と思わせる存在感がある。\n\nでも実は、あなた自身が\n誰かに深く守られたいと思っている。\nその本音、もう隠さなくていい。`,
+    '獅子座': `どこにいても目を引く存在感がある。\n輝くオーラは隠せない。\n\nその輝きを「目立ちすぎ」と遠慮してきたなら、\nもうやめて。\nあなたが輝くことが、誰かの許可になる。`,
+    '乙女座': `清潔感があり、丁寧で誠実な印象。\n「しっかりしてそう」と思われやすい。\n\nでも「完璧じゃないと」という緊張を\n手放したとき、\nもっと自然に愛されるようになる。`,
+    '天秤座': `美しく、どこか上品な雰囲気。\n自然と人を惹きつける魅力がある。\n\nでもその美しさの裏に、\n「嫌われたくない」という怖さを\n抱えていない？\n選ぶ側に立つとき、本当の魅力が出る。`,
+    '蠍座': `ミステリアスで、深みのある雰囲気。\n何かを持っている人だと感じさせる。\n\nその神秘性が人を引き寄せる。\n全部見せないことが\nあなたの最大の武器。`,
+    '射手座': `自由で明るく、一緒にいると楽しい。\n冒険心がある人だと思われる。\n\nでも深くつながることへの\n微かな恐れも持っている。\n自由でいながら愛される、\nそれがあなたの本来の姿。`,
+    '山羊座': `信頼感があり、大人の雰囲気を持つ。\n「できる人」オーラが自然と出る。\n\nでも完全に心を開いたことは\nあまりないかもしれない。\n鎧を脱いだあなたに、\n人は本当に惹かれる。`,
+    '水瓶座': `ユニークで、どこか不思議な印象。\n他の人とは違う空気を持っている。\n\nその個性が最大の武器。\n「わかってもらえない」と思う前に、\nその独自性をもっと前に出してみて。`,
+    '魚座': `夢のような、ふわっとした雰囲気。\n人の心に自然に入り込む力がある。\n\nその共感力と神秘性が\nあなたの官能的な魅力の源。\n自分の感性を信じて。`
+};
+
+// アセンダント計算（日本標準時、場所: 日本平均 lat:35.0, lon:135.0）
+function calcAscendant(year, month, day, hour, minute) {
+    const lat = 35.0, lon = 135.0;
+    // UTC変換（JST - 9h）
+    let utcHour = hour + minute / 60 - 9;
+    let utcDay = day;
+    if (utcHour < 0) { utcHour += 24; utcDay -= 1; }
+
+    // Julian Day Number
+    const a = Math.floor((14 - month) / 12);
+    const y = year + 4800 - a;
+    const m = month + 12 * a - 3;
+    let JD = utcDay + Math.floor((153 * m + 2) / 5) + 365 * y
+           + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+    JD += (utcHour - 12) / 24;
+
+    // Greenwich Mean Sidereal Time
+    const T = (JD - 2451545.0) / 36525;
+    let GMST = 280.46061837 + 360.98564736629 * (JD - 2451545)
+             + 0.000387933 * T * T - T * T * T / 38710000;
+    GMST = ((GMST % 360) + 360) % 360;
+
+    // Local Sidereal Time
+    const LST = ((GMST + lon) % 360 + 360) % 360;
+
+    // Obliquity & Ascendant
+    const eps = (23.4392911 - 0.013004167 * T) * Math.PI / 180;
+    const LSTR = LST * Math.PI / 180;
+    const latR = lat * Math.PI / 180;
+    let asc = Math.atan2(-Math.cos(LSTR),
+                          Math.sin(LSTR) * Math.cos(eps) + Math.tan(latR) * Math.sin(eps))
+              * 180 / Math.PI;
+    return ((asc % 360) + 360) % 360;
+}
+
+const SIGN_NAMES = ['牡羊座','牡牛座','双子座','蟹座','獅子座','乙女座',
+                    '天秤座','蠍座','射手座','山羊座','水瓶座','魚座'];
+
+function degToSign(deg) {
+    return SIGN_NAMES[Math.floor(((deg % 360) + 360) % 360 / 30)];
+}
+
+function getSunSign(m, d) {
+    if ((m===12&&d>=22)||(m===1&&d<=19)) return SIGNS[0];
+    if ((m===1&&d>=20)||(m===2&&d<=18))  return SIGNS[1];
+    if ((m===2&&d>=19)||(m===3&&d<=20))  return SIGNS[2];
+    if ((m===3&&d>=21)||(m===4&&d<=19))  return SIGNS[3];
+    if ((m===4&&d>=20)||(m===5&&d<=20))  return SIGNS[4];
+    if ((m===5&&d>=21)||(m===6&&d<=20))  return SIGNS[5];
+    if ((m===6&&d>=21)||(m===7&&d<=22))  return SIGNS[6];
+    if ((m===7&&d>=23)||(m===8&&d<=22))  return SIGNS[7];
+    if ((m===8&&d>=23)||(m===9&&d<=22))  return SIGNS[8];
+    if ((m===9&&d>=23)||(m===10&&d<=22)) return SIGNS[9];
+    if ((m===10&&d>=23)||(m===11&&d<=21))return SIGNS[10];
+    return SIGNS[11];
+}
+
+function selectGender(g) {
+    document.getElementById('gl-f').classList.toggle('selected', g === 'f');
+    document.getElementById('gl-m').classList.toggle('selected', g === 'm');
+    document.querySelector(`input[value="${g}"]`).checked = true;
+}
+
+function calculate() {
+    const val = document.getElementById('bd').value;
+    if (!val) { alert('生年月日を入力してください'); return; }
+
+    const isMale = document.querySelector('input[name="gender"]:checked').value === 'm';
+
+    const dt = new Date(val);
+    const sign = getSunSign(dt.getMonth()+1, dt.getDate());
+
+    document.getElementById('sym').textContent      = sign.sym;
+    document.getElementById('sname').textContent    = sign.name;
+    document.getElementById('sdates').textContent   = sign.dates;
+    document.getElementById('selement').textContent = sign.el;
+    document.getElementById('sun-msg').textContent  = sign.msg;
+    document.getElementById('q-text').textContent   = sign.q;
+
+    // アセンダント計算（出生時間が入力されている場合）
+    const btVal = document.getElementById('bt').value;
+    const ascCard = document.getElementById('asc-card');
+    const oracleCard = document.getElementById('oracle-card');
+    let ascInfo = '';
+    let oracleInfo = '';
+    if (btVal) {
+        const [h, min] = btVal.split(':').map(Number);
+        const dt2 = new Date(val);
+        const ascDeg = calcAscendant(dt2.getFullYear(), dt2.getMonth()+1, dt2.getDate(), h, min);
+        const ascSign = degToSign(ascDeg);
+        ascCard.style.display = 'block';
+        document.getElementById('asc-msg').textContent = ASC[ascSign];
+        ascInfo = `\n↑ アセンダント（上昇星座）：${ascSign}\n${ASC[ascSign]}`;
+
+        // オラクルカード：今日の月星座 × アセンダント
+        const todayMoon = getTodayMoonSign();
+        const now = new Date();
+        const oracleMsg = ORACLE[ascSign] && ORACLE[ascSign][todayMoon] ? ORACLE[ascSign][todayMoon] : '';
+        oracleCard.style.display = 'block';
+        document.getElementById('oracle-date').textContent =
+            `${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} の星のメッセージ`;
+        document.getElementById('oracle-moon').textContent = `🌙 今日の月 : ${todayMoon}`;
+        document.getElementById('oracle-text').textContent = oracleMsg;
+        oracleInfo = `\n\n🔮 今日のオラクル（${ascSign} × 月${todayMoon}）\n${oracleMsg}`;
+    } else {
+        ascCard.style.display = 'none';
+        oracleCard.style.display = 'none';
+    }
+
+    // コピーテキストを生成（先頭に星座名 → LINEキーワード検知に使用）
+    const bd = val.replace(/-/g,'/');
+    const copyContent =
+`【${sign.name}】${sign.sym}
+生年月日：${bd}${btVal ? '　出生時間：'+btVal : ''}
+
+☀ 今のわたしのテーマ
+${sign.msg}
+${ascInfo}${oracleInfo}
+
+✦ えりぷよからの問いかけ
+${sign.q}
+
+───────────────
+えりぷよホロスコープ診断より
+このテキストをLINEに送ると詳しい鑑定が届きます`;
+
+    document.getElementById('copy-text').textContent = copyContent;
+
+    // 男性の場合：コピーブロック・月星座・LINE CTAを非表示
+    const copyBlock = document.querySelector('.copy-block');
+    const moonCard  = document.querySelector('.moon-card');
+    const lineSection = document.querySelector('.line-section');
+    if (isMale) {
+        copyBlock.style.display  = 'none';
+        moonCard.style.display   = 'none';
+        lineSection.style.display = 'none';
+    } else {
+        copyBlock.style.display  = '';
+        moonCard.style.display   = '';
+        lineSection.style.display = '';
+    }
+
+    const res = document.getElementById('result');
+    res.classList.add('show');
+    setTimeout(() => res.scrollIntoView({ behavior:'smooth', block:'start' }), 100);
+}
+
+function copyText() {
+    const text = document.getElementById('copy-text').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copy-btn');
+        const icon = document.getElementById('copy-icon');
+        const label = document.getElementById('copy-label');
+        btn.classList.add('copied');
+        icon.textContent = '✓';
+        label.textContent = 'コ ピ ー し ま し た';
+        setTimeout(() => {
+            btn.classList.remove('copied');
+            icon.textContent = '📋';
+            label.textContent = 'テ キ ス ト を コ ピ ー す る';
+        }, 3000);
+    });
+}
+</script>
+</body>
+</html>
