@@ -969,8 +969,15 @@ function calculate() {
 
     // コピーテキストを生成（先頭に星座名 → LINEキーワード検知に使用）
     const bd = val.replace(/-/g,'/');
+
+    // アセンダントがある場合はAC:星座名をキーワードとして先頭に追加
+    const ascSign2 = btVal ? degToSign(calcAscendant(
+        new Date(val).getFullYear(), new Date(val).getMonth()+1,
+        new Date(val).getDate(), ...btVal.split(':').map(Number))) : null;
+    const acLine = ascSign2 ? `AC:${ascSign2}\n` : '';
+
     const copyContent =
-`【${sign.name}】${sign.sym}
+`${acLine}【${sign.name}】${sign.sym}
 生年月日：${bd}${btVal ? '　出生時間：'+btVal : ''}
 
 ☀ 今のわたしのテーマ
