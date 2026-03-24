@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LINE公式アカウント 自動返信設定マニュアル｜えりぷよ</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif; color: #333; background: #faf8f5; }
+  .page { max-width: 800px; margin: 0 auto; padding: 40px 32px; }
+
+  /* Cover */
+  .cover { text-align: center; padding: 60px 0 48px; border-bottom: 2px solid #c9a96e; margin-bottom: 48px; }
+  .cover-badge { display: inline-block; font-size: 11px; letter-spacing: 3px; color: #c9a96e; border: 1px solid #c9a96e; padding: 6px 18px; margin-bottom: 24px; }
+  .cover h1 { font-size: 26px; font-weight: bold; color: #2c1a0e; line-height: 1.5; margin-bottom: 12px; }
+  .cover p { font-size: 14px; color: #888; }
+
+  /* Section */
+  .section { margin-bottom: 48px; }
+  .section-title { font-size: 18px; font-weight: bold; color: #2c1a0e; border-left: 4px solid #c9a96e; padding-left: 12px; margin-bottom: 20px; }
+
+  /* Steps */
+  .step { background: #fff; border: 1px solid #e8e0d4; border-radius: 8px; padding: 24px; margin-bottom: 16px; }
+  .step-num { display: inline-block; background: #c9a96e; color: #fff; font-size: 12px; font-weight: bold; width: 28px; height: 28px; line-height: 28px; text-align: center; border-radius: 50%; margin-bottom: 12px; }
+  .step h3 { font-size: 15px; font-weight: bold; color: #2c1a0e; margin-bottom: 10px; }
+  .step p, .step li { font-size: 14px; color: #555; line-height: 1.8; }
+  .step ul, .step ol { padding-left: 20px; margin-top: 8px; }
+  .step li { margin-bottom: 6px; }
+
+  /* Highlight box */
+  .highlight { background: #fdf6ec; border: 1px solid #c9a96e; border-radius: 6px; padding: 16px 20px; margin: 12px 0; }
+  .highlight p { font-size: 14px; color: #5c3d2e; line-height: 1.8; }
+
+  /* Keyword table */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  th { background: #c9a96e; color: #fff; padding: 10px 14px; text-align: left; }
+  td { padding: 10px 14px; border-bottom: 1px solid #e8e0d4; background: #fff; }
+  tr:nth-child(even) td { background: #fdf6ec; }
+
+  /* Message block */
+  .msg-block { background: #f5f0ea; border-radius: 8px; padding: 20px; margin: 12px 0; white-space: pre-wrap; font-size: 13px; line-height: 1.9; color: #444; border-left: 3px solid #c9a96e; }
+
+  /* Note */
+  .note { background: #fff8f0; border: 1px solid #f0c080; border-radius: 6px; padding: 12px 16px; margin: 12px 0; font-size: 13px; color: #a07030; }
+
+  /* Footer */
+  .footer { text-align: center; padding: 40px 0 0; border-top: 1px solid #e8e0d4; margin-top: 48px; font-size: 12px; color: #aaa; }
+
+  @media print {
+    body { background: #fff; }
+    .step { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Cover -->
+  <div class="cover">
+    <div class="cover-badge">ERIKO GOTO × LINE OFFICIAL ACCOUNT</div>
+    <h1>LINE公式アカウント<br>自動返信 設定マニュアル</h1>
+    <p>アセンダント別 深いメッセージ 12種 設定手順</p>
+  </div>
+
+  <!-- Overview -->
+  <div class="section">
+    <div class="section-title">仕組みの全体像</div>
+    <div class="step">
+      <p>ホロスコープ診断ページで診断した女性が、コピーテキストをLINEに送ります。<br>
+      テキストの先頭に <strong>AC:牡羊座</strong> のようなキーワードが含まれており、LINEが自動で検知して、アセンダント別の深いメッセージを自動送信します。</p>
+      <div class="highlight">
+        <p>📌 ポイント：えりぷよさんは何もしなくてOK！<br>
+        一度設定すれば、24時間自動で返信が届きます。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 1 -->
+  <div class="section">
+    <div class="section-title">設定手順</div>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>LINE Official Account Managerにログイン</h3>
+      <ol>
+        <li>ブラウザで <strong>https://manager.line.biz/</strong> を開く</li>
+        <li>えりぷよのLINE公式アカウントでログイン</li>
+        <li>左メニューから対象のアカウントを選択</li>
+      </ol>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>自動応答メッセージの設定画面を開く</h3>
+      <ol>
+        <li>左サイドメニュー「<strong>自動応答メッセージ</strong>」をクリック</li>
+        <li>上部タブ「<strong>キーワード応答</strong>」を選択</li>
+        <li>右上「<strong>作成</strong>」ボタンをクリック</li>
+      </ol>
+      <div class="note">
+        ⚠️ 「応答メッセージ」ではなく「キーワード応答」のタブを選んでください。
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>キーワードと返信文を設定する（12回繰り返す）</h3>
+      <ol>
+        <li>「キーワード」欄に下記の表のキーワードをコピー＆ペースト</li>
+        <li>「一致タイプ」→ <strong>部分一致</strong> を選択</li>
+        <li>「メッセージ」欄に対応する返信文をコピー＆ペースト</li>
+        <li>「<strong>保存</strong>」をクリック</li>
+        <li>これを12星座分（12回）繰り返す</li>
+      </ol>
+      <div class="highlight">
+        <p>✦ 「部分一致」にすることで、テキストの途中に<br>
+        「AC:牡羊座」が含まれていれば自動で反応します。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Keyword list -->
+  <div class="section">
+    <div class="section-title">キーワード一覧</div>
+    <table>
+      <tr><th>キーワード（コピーして使う）</th><th>対応するアセンダント</th></tr>
+      <tr><td>AC:牡羊座</td><td>アセンダント 牡羊座</td></tr>
+      <tr><td>AC:牡牛座</td><td>アセンダント 牡牛座</td></tr>
+      <tr><td>AC:双子座</td><td>アセンダント 双子座</td></tr>
+      <tr><td>AC:蟹座</td><td>アセンダント 蟹座</td></tr>
+      <tr><td>AC:獅子座</td><td>アセンダント 獅子座</td></tr>
+      <tr><td>AC:乙女座</td><td>アセンダント 乙女座</td></tr>
+      <tr><td>AC:天秤座</td><td>アセンダント 天秤座</td></tr>
+      <tr><td>AC:蠍座</td><td>アセンダント 蠍座</td></tr>
+      <tr><td>AC:射手座</td><td>アセンダント 射手座</td></tr>
+      <tr><td>AC:山羊座</td><td>アセンダント 山羊座</td></tr>
+      <tr><td>AC:水瓶座</td><td>アセンダント 水瓶座</td></tr>
+      <tr><td>AC:魚座</td><td>アセンダント 魚座</td></tr>
+    </table>
+  </div>
+
+  <!-- Messages -->
+  <div class="section">
+    <div class="section-title">返信メッセージ 12種（コピー＆ペースト用）</div>
+    <p style="font-size:13px;color:#888;margin-bottom:16px;">以下の各メッセージをそのままLINEの「メッセージ」欄に貼り付けてください。</p>
+
+    <div class="step">
+      <h3>① AC:牡羊座</h3>
+      <div class="msg-block">あなたのアセンダントは牡羊座。
+
+生まれてきたとき、あなたの魂は「とにかく動け、感じろ、今すぐ」って言いながら地球に降りてきたの。
+
+だから、あなたの恋愛も、欲求も、感情も──
+ぜんぶ"瞬発力"が命なんだよね。
+
+でもね、そのスピードが怖くて、
+自分でブレーキ踏んでること、ない？
+
+✦ えりぷよからの問いかけ
+
+「今すぐ動きたい衝動を、あなたはどれだけ許可してる？」
+
+その衝動を"あたまで整理"しようとしてるうちに、
+本当の気持ちをどこかに置いてきちゃってるかもしれない。
+
+アクセスバーズでは、そのブレーキになってる思い込みを
+手技でやさしく手放していくの。
+
+「感じちゃいけない」「動いちゃいけない」って
+どこで学んだか、一緒に探してみない？
+
+📍 横浜サロン：えりぷよに会いに来てね
+ご予約はこのLINEにメッセージを送ってください♡
+
+セクシーサンキュー♈</div>
+    </div>
+
+    <div class="step">
+      <h3>② AC:牡牛座</h3>
+      <div class="msg-block">あなたのアセンダントは牡牛座。
+
+あなたの魂は「ちゃんと感じたい。身体で受け取りたい」って
+言いながら生まれてきたの。
+
+五感が鋭くて、空気を読むのが得意で、
+相手の温度まで感じ取れる──
+それがあなたの天才性。
+
+でもね、感じすぎるから疲れることもあるよね。
+「こんなに求めていいの？」って
+自分の欲求に罪悪感を持ってたりしない？
+
+✦ えりぷよからの問いかけ
+
+「あなたが"受け取ること"を許可したら、今の関係はどう変わる？」
+
+牡牛座のアセンダントは、身体の喜びと直結してるの。
+フェムケアやアクセスバーズが特に深くつながるタイプ。
+
+自分の身体を「愛される場所」として扱う練習、
+一緒にしてみない？
+
+📍 横浜サロン：えりぷよに会いに来てね
+ご予約はこのLINEにメッセージを送ってください♡
+
+セクシーサンキュー♉</div>
+    </div>
+
+    <div class="step">
+      <h3>③ AC:双子座</h3>
+      <div class="msg-block">あなたのアセンダントは双子座。
+
+あなたの魂は「知りたい、伝えたい、つながりたい」って
+言いながら降りてきたの。
+
+頭の回転が速くて、言葉で人を動かせる力がある。
+でも同時に、考えすぎて気持ちを「言語化」しようとして
+感じることを後回しにしてしまうことも。
+
+✦ えりぷよからの問いかけ
+
+「頭で"理解"することと、身体で"感じる"こと──
+あなたはどっちに逃げてる？」
+
+ねえ、本当は言葉じゃなくてただ感じたいだけじゃないの？
+
+アクセスバーズは、頭をいったん静かにしてくれるの。
+思考を手放した先に、あなた本来の感覚が待ってる。
+
+📍 横浜サロン：えりぷよに会いに来てね
+ご予約はこのLINEにメッセージを送ってください♡
+
+セクシーサンキュー♊</div>
+    </div>
+
+    <div class="step">
+      <h3>④ AC:蟹座</h3>
+      <div class="msg-block">あなたのアセンダントは蟹座。
+
+あなたの魂は「守りたい、大切にしたい、感じさせてあげたい」って
+言いながら生まれてきたの。
+
+愛情深くて、共感力が高くて、
+誰かのために動ける人。
+
+でもね──
+自分のことは後回しにしてない？
+
+「わたしが求めていいの？」って
+どこかで遠慮してることない？
+
+✦ えりぷよからの問いかけ
+
+「あなたが誰かに与えているものを、あなた自身は受け取れてる？」
+
+蟹座のアセンダントは、「与える愛」は得意でも
+「受け取る愛」がどこか苦手なの。
+
+アクセスバーズで、その遠慮の根っこを見てみよう。
+あなたが満たされたとき、あなたの愛はもっと深くなるから。
+
+📍 横浜サロン：えりぷよに会いに来てね
+ご予約はこのLINEにメッセージを送ってください♡
+
+セクシーサンキュー♋</div>
+    </div>
+
+    <div class="step">
+      <h3>⑤ AC:獅子座</h3>
+      <div class="msg-block">あなたのアセンダントは獅子座。
+
+あなたの魂は「輝きたい、愛されたい、ここにいていい」って
+叫びながら生まれてきたの。
+
+存在感があって、愛情が深くて、
+誰かを幸せにする力を持ってる。
+
+でもね──
+その輝きを「出しすぎてはいけない」って
+自分で消してたりしない？
+
+✦ えりぷよからの問いかけ
+
+「あなたが本当に輝いたとき、誰かが困ると思ってる？」
+
+獅子座のアセンダントは、本来は愛の女王。
+でも「出すぎること」への罪悪感が、
+あなたの光にフタをしてることがある。
+
+アクセスバーズで、そのフタを外してみよう。
+あなたが輝くほど、あなたの周りも明るくなるんだよ。
+
+📍 横浜サロン：えりぷよに会いに来てね
+ご予約はこのLINEにメッセージを送ってください♡
+
+セクシーサンキュー♌</div>
+    </div>
+
+    <div class="step">
+      <h3>⑥ AC:乙女座</h3>
+      <div class="msg-block">あなたのアセンダントは乙女座。
+
+あなたの魂は「ちゃんとしたい、役に立ちたい、完璧でいたい」って
+言いながら降りてきたの。
+
+細かいことに気がついて、誰かのために動けて、
+自分に厳しい──それがあなたの美しさ。
+
+でもね、その「ちゃんとしなきゃ」が
+恋愛や自分の欲求にまで及んでない？
+
+✦ えりぷよからの問いかけ
+
+「"完璧じゃないわたし"を、あなたは愛せてる？」
+
+乙女座のアセンダントは、自分への要求が高すぎて
+「こんな自分じゃ愛されない」って思いやすい。
+
+でも、愛されるのに条件なんていらないの。
+アクセスバーズで、その「条件」を手放してみよう。
+
+📍 横浜サロン：えりぷよに会いに来てね
+ご予約はこのLINEにメッセージを送ってください♡
+
+セクシーサンキュー♍</div>
+    </div>
+
+    <div class="step">
+      <h3>⑦ AC:天秤座</h3>
+      <div class="msg-block">あなたのアセンダントは天秤座。
+
+あなたの魂は「美しくいたい、調和したい、愛と愛されたい」って
+言いながら生まれてきたの。
+
+センスがよくて、人間関係を大切にして、
+誰かといるときに輝くタイプ。
+
+でもね──
+「嫌われたくない」「波風立てたくない」って
+本音を隠しすぎてない？
+
+✦ えりぷよからの問いかけ
+
+「あなたが本当に望んでいることを、あなたは口に出せてる？」
+
+天秤座のアセンダントは、相手に合わせすぎて
+自分が何を求めているかわからなくなることがある。
+
+アクセスバーズで、「本当のわたしはどうしたいの？」を
+一緒に見つけていこう。
+
+📍 横浜サロン：えりぷよに会いに来てね
+ご予約はこのLINEにメッセージを送ってください♡
+
+セクシーサンキュー♎</div>
+    </div>
+
+    <div class="step">
+      <h3>⑧ AC:蠍座</h3>
+      <div class="msg-block">あなたのアセンダントは蠍座。
+
+あなたの魂は「深く愛したい、すべてを感じたい、本質を見たい」って
+言いながら降りてきたの。
+
+表面じゃなく、魂で繋がることを求めてる。
+官能的で、直感が鋭くて、愛の深さが人一倍。
+
+でもね──
+その深さゆえに、傷つくのが怖くて
+全部出せずにいること、ない？
+
+✦ えりぷよからの問いかけ
+
+「あなたが本当に求めている"深さ"を、今の関係で受け取れてる？」
+
+蠍座のアセンダントは、自分の官能性や欲求に
+罪悪感を持ちやすいの。
+
+でも、それはあなたの力。
+アクセスバーズとフェムケアで、
+その扉をゆっくり開けてみない？
+
+📍 横浜サロン：えりぷよに会いに来てね
+ご予約はこのLINEにメッセージを送ってください♡
+
+セクシーサンキュー♏</div>
+    </div>
+
+    <div class="step">
+      <h3>⑨ AC:射手座</h3>
+      <div class="msg-block">あなたのアセンダントは射手座。
+
+あなたの魂は「自由でいたい、もっと遠くへ、本当のことを知りたい」って
+言いながら生まれてきたの。
+
+枠にはまることが苦手で、
+どこかいつも「もっと先」を見てる。
+
+でもね──
+その自由を求める心が、「でも現実はそうじゃない」ってところで
+息苦しくなってない？
+
+✦ えりぷよからの問いかけ
+
+「あなたが本当に求めている"自由"は、どんな形をしてる？」
+
+射手座のアセンダントは、魂レベルで「制限」が大嫌い。
+恋愛でも、仕事でも、自分の身体でも。
+
+アクセスバーズで、自分が作ってきた「檻」に気づいてみよう。
+自由は、外じゃなくて内側にあるから。
+
+📍 横浜サロン：えりぷよに会いに来てね
+ご予約はこのLINEにメッセージを送ってください♡
+
+セクシーサンキュー♐</div>
+    </div>
+
+    <div class="step">
+      <h3>⑩ AC:山羊座</h3>
+      <div class="msg-block">あなたのアセンダントは山羊座。
+
+あなたの魂は「成し遂げたい、責任を取りたい、信頼されたい」って
+言いながら降りてきたの。
+
+しっかり者で、強くて、誰かの頼りになれる人。
+でもね──
+「強くいなきゃ」って思いすぎて
+弱さを誰にも見せられてない、なんてことない？
+
+✦ えりぷよからの問いかけ
+
+「あなたが"弱いわたし"を誰かに見せたら、何が起きると思ってる？」
+
+山羊座のアセンダントは、甘えることへの罪悪感が強い。
+でもね、甘えられる女性ほど、
+男性にとって「守りたい存在」になるの。
+
+アクセスバーズで、その「鎧」をそっと外してみよう。
+
+📍 横浜サロン：えりぷよに会いに来てね
+ご予約はこのLINEにメッセージを送ってください♡
+
+セクシーサンキュー♑</div>
+    </div>
+
+    <div class="step">
+      <h3>⑪ AC:水瓶座</h3>
+      <div class="msg-block">あなたのアセンダントは水瓶座。
+
+あなたの魂は「自分らしくいたい、みんなと違っていい、新しい世界を作りたい」って
+言いながら生まれてきたの。
+
+独自の視点があって、既成概念に縛られない。
+感情より「理」で動くことが多いかも。
+
+でもね──
+その「クール」な感じの裏に、
+「わかってほしい」っていう深い孤独、隠してない？
+
+✦ えりぷよからの問いかけ
+
+「あなたが"普通の女"でいることを、どこかで諦めてない？」
+
+水瓶座のアセンダントは、感情を表に出すことを
+「ダサい」と思ってるところがある。
+
+でも、感じることは弱さじゃない。
+アクセスバーズで、感じることへの許可を取り戻そう。
+
+📍 横浜サロン：えりぷよに会いに来てね
+ご予約はこのLINEにメッセージを送ってください♡
+
+セクシーサンキュー♒</div>
+    </div>
+
+    <div class="step">
+      <h3>⑫ AC:魚座</h3>
+      <div class="msg-block">あなたのアセンダントは魚座。
+
+あなたの魂は「溶け合いたい、愛に包まれたい、すべてとつながりたい」って
+言いながら降りてきたの。
+
+感受性が豊かで、人の痛みがわかって、
+愛されるために生まれてきたような人。
+
+でもね──
+その繊細さゆえに、傷つきやすくて
+自分を守るために感じることをシャットダウンしてない？
+
+✦ えりぷよからの問いかけ
+
+「あなたが"全部感じていい"と許可したら、今の人生はどう変わる？」
+
+魚座のアセンダントは、スピリチュアルな感覚と
+身体の官能性が深くつながってる。
+
+アクセスバーズとフェムケアが最も深く響くタイプ。
+
+一緒に、あなたの感じる力を取り戻そう。
+
+📍 横浜サロン：えりぷよに会いに来てね
+ご予約はこのLINEにメッセージを送ってください♡
+
+セクシーサンキュー♓</div>
+    </div>
+  </div>
+
+  <!-- Final check -->
+  <div class="section">
+    <div class="section-title">設定完了チェックリスト</div>
+    <div class="step">
+      <ul>
+        <li>☐ キーワード応答が12個作成されている</li>
+        <li>☐ 各キーワードが「部分一致」になっている</li>
+        <li>☐ 自動応答が「オン」になっている</li>
+        <li>☐ テスト送信で正しく返信が届くか確認した</li>
+      </ul>
+      <div class="highlight" style="margin-top:16px;">
+        <p>✦ テスト方法：スマホのLINEからえりぷよの公式アカウントに<br>
+        「AC:牡羊座」とだけ送ってみてください。<br>
+        牡羊座のメッセージが届けば設定完了です！</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>えりぷよ × ホロスコープ × ACCESS BARS｜設定マニュアル</p>
+    <p style="margin-top:4px;">produced by gaku</p>
+  </div>
+
+</div>
+</body>
+</html>
