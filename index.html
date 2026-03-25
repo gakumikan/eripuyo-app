@@ -362,6 +362,26 @@
             margin-bottom: 12px;
         }
         .copy-instruction strong { color: var(--gold); font-weight: 400; }
+        .keyword-box {
+            background: rgba(201,169,110,0.08);
+            border: 1px solid rgba(201,169,110,0.4);
+            border-radius: 4px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .keyword-label {
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            color: var(--ivory-dim);
+            margin-bottom: 10px;
+        }
+        .keyword-value {
+            font-size: 22px;
+            letter-spacing: 0.1em;
+            color: var(--gold);
+            font-weight: 300;
+        }
         .copy-preview {
             background: rgba(255,255,255,0.03);
             border: 1px dashed rgba(201,169,110,0.25);
@@ -526,17 +546,20 @@
             <div class="oracle-text" id="oracle-text"></div>
         </div>
 
-        <!-- コピーブロック -->
-        <div class="copy-block">
+        <!-- LINEキーワードブロック -->
+        <div class="copy-block" id="copy-block">
             <p class="copy-instruction">
-                下のテキストをコピーして<br>
-                <strong>えりぷよのLINEに貼り付けて送ると</strong><br>
-                あなたの星座に合わせた詳しい鑑定が届きます
+                このキーワードをコピーして<br>
+                <strong>えりぷよのLINEに送る</strong>だけで<br>
+                アセンダント別の詳しい鑑定が届きます
             </p>
-            <textarea class="copy-preview" id="copy-text" readonly rows="10" onclick="this.select()"></textarea>
-            <button class="btn-copy" id="copy-btn" onclick="copyText()">
+            <div class="keyword-box">
+                <div class="keyword-label">▷ LINEに送るキーワード</div>
+                <div class="keyword-value" id="line-keyword">AC:牡羊座</div>
+            </div>
+            <button class="btn-copy" id="copy-btn" onclick="copyKeyword()">
                 <span id="copy-icon">📋</span>
-                <span id="copy-label">テ キ ス ト を コ ピ ー す る</span>
+                <span id="copy-label">キ ー ワ ー ド を コ ピ ー</span>
             </button>
         </div>
 
@@ -943,11 +966,12 @@ function calculate() {
     const oracleCard = document.getElementById('oracle-card');
     let ascInfo = '';
     let oracleInfo = '';
+    let ascSign = null;
     if (btVal) {
         const [h, min] = btVal.split(':').map(Number);
         const dt2 = new Date(val);
         const ascDeg = calcAscendant(dt2.getFullYear(), dt2.getMonth()+1, dt2.getDate(), h, min);
-        const ascSign = degToSign(ascDeg);
+        ascSign = degToSign(ascDeg);
         ascCard.style.display = 'block';
         document.getElementById('asc-msg').textContent = ASC[ascSign];
         ascInfo = `\n↑ アセンダント（上昇星座）：${ascSign}\n${ASC[ascSign]}`;
@@ -970,34 +994,8 @@ function calculate() {
     // コピーテキストを生成（先頭に星座名 → LINEキーワード検知に使用）
     const bd = val.replace(/-/g,'/');
 
-    // アセンダントがある場合はAC:星座名をキーワードとして先頭に追加
-    const ascSign2 = btVal ? degToSign(calcAscendant(
-        new Date(val).getFullYear(), new Date(val).getMonth()+1,
-        new Date(val).getDate(), ...btVal.split(':').map(Number))) : null;
-    const acLine = ascSign2 ? `AC:${ascSign2}\n` : '';
-
-    const copyContent =
-`${acLine}【${sign.name}】${sign.sym}
-生年月日：${bd}${btVal ? '　出生時間：'+btVal : ''}
-
-☀ 今のわたしのテーマ
-${sign.msg}
-${ascInfo}${oracleInfo}
-
-✦ えりぷよからの問いかけ
-${sign.q}
-
-───────────────
-えりぷよホロスコープ診断より
-このテキストをLINEに送ると詳しい鑑定が届きます`;
-
-    const copyEl = document.getElementById('copy-text');
-    copyEl.value = copyContent;
-    copyEl.style.height = 'auto';
-    copyEl.style.height = copyEl.scrollHeight + 'px';
-
-    // 男性の場合：コピーブロック・月星座・LINE CTAを非表示
-    const copyBlock = document.querySelector('.copy-block');
+    // LINEキーワード設定（アセンダントがある場合のみ表示）
+    const copyBlock = document.getElementById('copy-block');
     const moonCard  = document.querySelector('.moon-card');
     const lineSection = document.querySelector('.line-section');
     if (isMale) {
@@ -1005,7 +1003,13 @@ ${sign.q}
         moonCard.style.display   = 'none';
         lineSection.style.display = 'none';
     } else {
-        copyBlock.style.display  = '';
+        // アセンダントがある場合のみキーワードブロックを表示
+        if (btVal && ascSign) {
+            document.getElementById('line-keyword').textContent = `AC:${ascSign}`;
+            copyBlock.style.display = '';
+        } else {
+            copyBlock.style.display = 'none';
+        }
         moonCard.style.display   = '';
         lineSection.style.display = '';
     }
@@ -1015,8 +1019,8 @@ ${sign.q}
     setTimeout(() => res.scrollIntoView({ behavior:'smooth', block:'start' }), 100);
 }
 
-function copyText() {
-    const text = document.getElementById('copy-text').value;
+function copyKeyword() {
+    const text = document.getElementById('line-keyword').textContent;
     navigator.clipboard.writeText(text).then(() => {
         const btn = document.getElementById('copy-btn');
         const icon = document.getElementById('copy-icon');
@@ -1027,7 +1031,7 @@ function copyText() {
         setTimeout(() => {
             btn.classList.remove('copied');
             icon.textContent = '📋';
-            label.textContent = 'テ キ ス ト を コ ピ ー す る';
+            label.textContent = 'キ ー ワ ー ド を コ ピ ー';
         }, 3000);
     });
 }
