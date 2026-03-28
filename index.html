@@ -134,6 +134,78 @@
             margin-top: 8px;
             opacity: 0.6;
         }
+
+        /* ── ドラムロールピッカー ── */
+        .drum-picker {
+            display: flex;
+            height: 180px;
+            position: relative;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(201,169,110,0.25);
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .drum-col {
+            flex: 1;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .drum-col::-webkit-scrollbar { display: none; }
+        .drum-item {
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 15px;
+            color: var(--ivory);
+            scroll-snap-align: center;
+            letter-spacing: 1px;
+        }
+        .drum-item.pad { visibility: hidden; }
+        .drum-picker::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0; right: 0;
+            height: 36px;
+            transform: translateY(-50%);
+            border-top: 1px solid rgba(201,169,110,0.55);
+            border-bottom: 1px solid rgba(201,169,110,0.55);
+            background: rgba(201,169,110,0.07);
+            pointer-events: none;
+            z-index: 10;
+        }
+        .drum-picker::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom,
+                rgba(15,12,20,0.85) 0%,
+                transparent 30%,
+                transparent 70%,
+                rgba(15,12,20,0.85) 100%
+            );
+            pointer-events: none;
+            z-index: 5;
+        }
+        .drum-divider {
+            width: 1px;
+            background: rgba(201,169,110,0.15);
+            flex-shrink: 0;
+        }
+        .drum-unit-row {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 6px;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--gold);
+            opacity: 0.55;
+        }
         .btn-read {
             width: 100%;
             background: linear-gradient(135deg, #7a3a55 0%, #b05a78 100%);
@@ -497,8 +569,16 @@
                     <input type="radio" name="gender" value="m"> ♂ 男性
                 </label>
             </div>
-            <label class="form-label" for="bd">BIRTH DATE</label>
-            <input type="date" id="bd" class="form-input">
+            <label class="form-label">BIRTH DATE</label>
+            <input type="hidden" id="bd">
+            <div class="drum-picker" id="drum-picker">
+                <div class="drum-col" id="drum-year"></div>
+                <div class="drum-divider"></div>
+                <div class="drum-col" id="drum-month"></div>
+                <div class="drum-divider"></div>
+                <div class="drum-col" id="drum-day"></div>
+            </div>
+            <div class="drum-unit-row"><span>年</span><span>月</span><span>日</span></div>
             <div style="margin-top:16px;">
                 <label class="form-label" for="bt">BIRTH TIME <span style="opacity:0.4;font-size:9px;letter-spacing:1px;">任意</span></label>
                 <input type="time" id="bt" class="form-input">
@@ -507,6 +587,13 @@
             <button class="btn-read" onclick="calculate()">目 覚 め を 読 む</button>
         </div>
     </section>
+
+    <!-- アクセスバーズ問いかけ（常時表示） -->
+    <div class="q-card">
+        <div class="q-label">✦ 目覚めのための問いかけ</div>
+        <div class="q-text" id="q-text"></div>
+        <p class="q-note">答えを出さなくていい。<br>ジャッジもしなくていい。<br>この問いと、ただ一緒にいてみて。</p>
+    </div>
 
     <!-- 結果 -->
     <section id="result">
@@ -529,13 +616,6 @@
         <div class="card" id="asc-card" style="display:none;">
             <div class="card-label">↑ ASCENDANT — 恋愛での見え方・第一印象</div>
             <div class="card-body" id="asc-msg"></div>
-        </div>
-
-        <!-- アクセスバーズ問いかけ -->
-        <div class="q-card">
-            <div class="q-label">✦ 目覚めのための問いかけ</div>
-            <div class="q-text" id="q-text"></div>
-            <p class="q-note">答えを出さなくていい。<br>ジャッジもしなくていい。<br>この問いと、ただ一緒にいてみて。</p>
         </div>
 
         <!-- 今日のオラクルメッセージ（アセンダント判明時のみ） -->
@@ -1425,6 +1505,73 @@ function copyKeyword() {
         }, 3000);
     });
 }
+document.getElementById('q-text').textContent = getDailyQuestion();
+
+// ── ドラムロールピッカー ──
+(function() {
+    const ITEM_H = 36;
+    const PAD = 2;
+
+    function buildCol(el, items) {
+        for (let i = 0; i < PAD; i++) {
+            const d = document.createElement('div');
+            d.className = 'drum-item pad';
+            d.innerHTML = '&nbsp;';
+            el.appendChild(d);
+        }
+        items.forEach(txt => {
+            const d = document.createElement('div');
+            d.className = 'drum-item';
+            d.textContent = txt;
+            el.appendChild(d);
+        });
+        for (let i = 0; i < PAD; i++) {
+            const d = document.createElement('div');
+            d.className = 'drum-item pad';
+            d.innerHTML = '&nbsp;';
+            el.appendChild(d);
+        }
+    }
+
+    function getIdx(el) {
+        return Math.round(el.scrollTop / ITEM_H);
+    }
+
+    const YEARS  = Array.from({length: 71}, (_, i) => (1940 + i) + '年');
+    const MONTHS = Array.from({length: 12}, (_, i) => (i + 1) + '月');
+    const DAYS   = Array.from({length: 31}, (_, i) => (i + 1) + '日');
+
+    const yearCol  = document.getElementById('drum-year');
+    const monthCol = document.getElementById('drum-month');
+    const dayCol   = document.getElementById('drum-day');
+
+    buildCol(yearCol,  YEARS);
+    buildCol(monthCol, MONTHS);
+    buildCol(dayCol,   DAYS);
+
+    // デフォルト: 1984年1月1日
+    yearCol.scrollTop  = (1984 - 1940) * ITEM_H;
+    monthCol.scrollTop = 0;
+    dayCol.scrollTop   = 0;
+
+    function update() {
+        const y  = 1940 + getIdx(yearCol);
+        const m  = 1    + getIdx(monthCol);
+        const d  = 1    + getIdx(dayCol);
+        const maxD = new Date(y, m, 0).getDate();
+        const cD = Math.min(d, maxD);
+        const mm = String(m).padStart(2, '0');
+        const dd = String(cD).padStart(2, '0');
+        document.getElementById('bd').value = `${y}-${mm}-${dd}`;
+    }
+
+    update();
+
+    [yearCol, monthCol, dayCol].forEach(col => {
+        let t;
+        col.addEventListener('scroll', () => { clearTimeout(t); t = setTimeout(update, 80); });
+    });
+})();
 </script>
 </body>
 </html>
